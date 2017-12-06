@@ -3,10 +3,15 @@
 }
 
 .calendar--day {
+    position: relative;
     border: 1px solid gray;
     width: 10em;
     height: 10em;
     padding: 0.5em;
-    vertical-align: top;
-    text-align: right;
+}
+
+.calendar--day__label {
+    position: absolute;
+    right: 0.5em;
+    top: 0.5em;
 }

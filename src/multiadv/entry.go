@@ -16,6 +16,7 @@ type Entry struct {
 
 type EntryDAO interface {
 	FetchEntriesOfMonth(year, month int) ([]Entry, error)
+	Create(entry Entry) error
 }
 
 type entryDAO struct {
@@ -39,4 +40,12 @@ func (e *entryDAO) FetchEntriesOfMonth(year, month int) ([]Entry, error) {
 		return nil, fmt.Errorf("entry.fetchEntriesOfMonth: cannot fetch entries of year=%d, month=%d\n%s", year, month, err.Error())
 	}
 	return result, nil
+}
+
+func (e *entryDAO) Create(entry Entry) error {
+	err := e.db.C("entries").Insert(entry)
+	if err != nil {
+		return fmt.Errorf("entry.Create: failed to insert entry %s\n%s", entry.Title, err.Error())
+	}
+	return nil
 }

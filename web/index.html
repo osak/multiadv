@@ -11,11 +11,25 @@
         {{range .CalendarRows}}
         <tr class="calendar--week">
             {{range .}}
-            <td class="calendar--day">{{if gt .Day 0}}{{.Day}}{{end}}</td>
+            <td class="calendar--day">
+                <div class="calendar--day__label">{{if gt .Day 0}}{{.Day}}{{end}}</div>
+                <ul>
+                    {{range .Entries}}
+                    <li><a href="{{.Url}}">{{.Title}}</a></li>
+                    {{end}}
+                </ul>
+            </td>
             {{end}}
         </tr>
         {{end}}
     </table>
+    <form method="post" action="/post">
+        <input type="hidden" name="month" value="12" />
+        <label>Day: <input type="text" name="day"/></label>
+        <label>Title: <input type="text" name="title"/></label>
+        <label>URL: <input type="text" name="url"/></label>
+        <button>Submit</button>
+    </form>
 </div>
 </body>
 </html>

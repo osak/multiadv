@@ -7,6 +7,7 @@ import (
 	"gopkg.in/mgo.v2"
 	"log"
 	"multiadv"
+	"strconv"
 )
 
 type CalendarDay struct {
@@ -68,6 +69,31 @@ func staticHandler(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "web/"+r.URL.String())
 }
 
+func postHandler(entryDAO multiadv.EntryDAO) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		month, err := strconv.Atoi(r.Form["month"][0])
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		day, err := strconv.Atoi(r.Form["day"][0])
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		entry := multiadv.Entry {
+			Year: 2017,
+			Month: month,
+			Day: day,
+			Title: r.Form["title"][0],
+			Url: r.Form["url"][0],
+		}
+		entryDAO.Create(entry)
+		http.Redirect(w, r, "/", http.StatusFound)
+	}
+}
+
 func main() {
 	mongo, err := mgo.Dial("127.0.0.1:27017")
 	if err != nil {
@@ -78,5 +104,6 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", indexHandler(entryDAO))
 	mux.HandleFunc("/static/", staticHandler)
+	mux.HandleFunc("/post", postHandler(entryDAO))
 	http.ListenAndServe("127.0.0.1:25252", mux)
 }
