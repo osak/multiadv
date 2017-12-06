@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>読んだ本 Advent Calendar</title>
+</head>
+<body>
+<div id="main">
+    <table id="calendar">
+        {{range .CalendarRows}}
+        <tr class="calendar--week">
+            {{range .}}
+            <td class="calendar--day">{{if gt .Day 0}}{{.Day}}{{end}}</td>
+            {{end}}
+        </tr>
+        {{end}}
+    </table>
+</div>
+</body>
+</html>
