@@ -42,12 +42,12 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func staticHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, r.URL.String())
+	http.ServeFile(w, r, "web/" + r.URL.String())
 }
 
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", indexHandler)
-	mux.HandleFunc("/static/*", staticHandler)
+	mux.HandleFunc("/static/", staticHandler)
 	http.ListenAndServe("127.0.0.1:25252", mux)
 }

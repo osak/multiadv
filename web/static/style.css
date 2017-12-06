@@ -1,0 +1,12 @@
+#calendar {
+    display: table;
+}
+
+.calendar--day {
+    border: 1px solid gray;
+    width: 10em;
+    height: 10em;
+    padding: 0.5em;
+    vertical-align: top;
+    text-align: right;
+}
